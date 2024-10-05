@@ -26,12 +26,21 @@
 			"patterns": [
 			{
 				"name": "keyword.control.act",
-				"match": "\\b(chp-txt|chp|prs|dataview|forever|send|recv|template|import|defproc|defcell)\\b"
+				"match": "\\b(chp-txt|chp|prs|dataview|forever|template|import|defproc|defcell)\\b"
 			},
 			{
 				"include": "#skip-statement"
+			},
+			{
+				"include": "#communication-statement"
+			},
+			{
+				"include": "#select-statement"
+			},
+			{
+				"include": "#select-label"
 			}
-		]
+			]
 		},
 		"types": {
 			"patterns": [{
@@ -44,17 +53,17 @@
 			{
 				"include": "#channel-types"
 			}
-		]
+			]
 		},
 		"types-param": {
 			"patterns": [{
-				"name": "entity.name.type.cs",
+				"name": "entity.name.type.act",
 				"match": "\\b(pint|preal|pbool)\\b"
 			}]
 		},
 		"channel-types": {
 			"patterns": [{
-				"name": "entity.name.type.cs",
+				"name": "entity.name.type.act",
 				"match": "\\bchan\\b"
 			},
 			{
@@ -62,16 +71,19 @@
 			},
 			{
 				"include": "#channel-direction-output"
-			}]
+			}
+			]
 		},
 		"channel-direction-input":{
 			"patterns": [{
-				"name": "entity.name.type.cs",
+				"name": "entity.name.type.act",
 				"match": "(?<!\\s)\\!"
-			}]
-		},"channel-direction-output":{
+			}
+			]
+		},
+		"channel-direction-output":{
 			"patterns": [{
-				"name": "entity.name.type.cs",
+				"name": "entity.name.type.act",
 				"match": "(?<!\\s)\\?"
 			}]
 		},
@@ -79,12 +91,13 @@
 			"patterns": [{
 				"name": "keyword.operator.act",
 				"match": "\\+|\\:\\=|\\-|\\*|\\/"
-			}]
+			}
+			]
 		},
 		"comments": {
 			"patterns": [
 				{
-					"name": "comment.line.single.act",
+					"name": "comment.line.double-slash.act",
 					"begin": "\//",
 					"end": "\\n"
 				},
@@ -119,9 +132,6 @@
 					"include": "#preprocessor-expression"
 				},
 				{
-					"include": "#select-label"
-				},
-				{
 					"include": "#argument-list"
 				}
 			]
@@ -132,10 +142,10 @@
 					"match": "\\b(?:(true)|(false))\\b",
 					"captures": {
 						"1": {
-							"name": "constant.language.boolean.true.cs"
+							"name": "constant.language.boolean.true.act"
 						},
 						"2": {
-							"name": "constant.language.boolean.false.cs"
+							"name": "constant.language.boolean.false.act"
 						}
 					}
 				},
@@ -143,32 +153,30 @@
 					"match": "(=|!=)|(\\!|&|\\|\\|)",
 					"captures": {
 						"1": {
-							"name": "keyword.operator.comparison.cs"
+							"name": "keyword.operator.comparison.act"
 						},
 						"2": {
-							"name": "keyword.operator.logical.cs"
+							"name": "keyword.operator.logical.act"
 						}
 					}
 				}
 			]
 		},
-		"skip-statement": {
-			"match": "\\b(skip)\\b",
-			"name": "keyword.control.flow.$2.cs"
+		"select-statement": {
+			"match": "\\b(select)\\b",
+			"name": "keyword.operator.expression.default.act"
 		},
 		"select-label": {
-			"begin": "\\b(case|else)\\b",
-			"beginCaptures": {
-				"1": {
-					"name": "keyword.control.conditional.$1.cs"
-				}
-			},
-			"end": "(:)|(?=})",
-			"endCaptures": {
-				"1": {
-					"name": "punctuation.separator.colon.cs"
-				}
-			}
+			"match": "\\b(case|else)\\b",
+			"name": "keyword.control.conditional.case.act"
+		},
+		"skip-statement": {
+			"match": "\\b(skip)\\b",
+			"name": "keyword.control.flow.$1.act"
+		},
+		"communication-statement": {
+			"match": "\\b(recv|send)\\b",
+			"name": "keyword.operator.expression.default.act"
 		}
 	},
 	"scopeName": "source.act"
