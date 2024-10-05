@@ -1,0 +1,175 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Asynchronous Circuit Toolkit (ACT)",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#expression"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+			{
+				"name": "keyword.control.act",
+				"match": "\\b(chp-txt|chp|prs|dataview|forever|send|recv|template|import|defproc|defcell)\\b"
+			},
+			{
+				"include": "#skip-statement"
+			}
+		]
+		},
+		"types": {
+			"patterns": [{
+				"name": "keyword.type.$1.act",
+				"match": "\\b(bool|int|real)\\b"
+			},
+			{
+				"include": "#types-param"
+			},
+			{
+				"include": "#channel-types"
+			}
+		]
+		},
+		"types-param": {
+			"patterns": [{
+				"name": "entity.name.type.cs",
+				"match": "\\b(pint|preal|pbool)\\b"
+			}]
+		},
+		"channel-types": {
+			"patterns": [{
+				"name": "entity.name.type.cs",
+				"match": "\\bchan\\b"
+			},
+			{
+				"include": "#channel-direction-input"
+			},
+			{
+				"include": "#channel-direction-output"
+			}]
+		},
+		"channel-direction-input":{
+			"patterns": [{
+				"name": "entity.name.type.cs",
+				"match": "(?<!\\s)\\!"
+			}]
+		},"channel-direction-output":{
+			"patterns": [{
+				"name": "entity.name.type.cs",
+				"match": "(?<!\\s)\\?"
+			}]
+		},
+		"operators": {
+			"patterns": [{
+				"name": "keyword.operator.act",
+				"match": "\\+|\\:\\=|\\-|\\*|\\/"
+			}]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.single.act",
+					"begin": "\//",
+					"end": "\\n"
+				},
+				{
+					"include": "#comments-multiline"
+				}
+			]
+		},
+		"comments-multiline": {
+			"patterns": [
+				{
+					"name": "comment.block.act",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.act",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.act",
+					"match": "\\\\."
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{
+					"include": "#preprocessor-expression"
+				},
+				{
+					"include": "#select-label"
+				},
+				{
+					"include": "#argument-list"
+				}
+			]
+		},
+		"preprocessor-expression": {
+			"patterns": [
+				{
+					"match": "\\b(?:(true)|(false))\\b",
+					"captures": {
+						"1": {
+							"name": "constant.language.boolean.true.cs"
+						},
+						"2": {
+							"name": "constant.language.boolean.false.cs"
+						}
+					}
+				},
+				{
+					"match": "(=|!=)|(\\!|&|\\|\\|)",
+					"captures": {
+						"1": {
+							"name": "keyword.operator.comparison.cs"
+						},
+						"2": {
+							"name": "keyword.operator.logical.cs"
+						}
+					}
+				}
+			]
+		},
+		"skip-statement": {
+			"match": "\\b(skip)\\b",
+			"name": "keyword.control.flow.$2.cs"
+		},
+		"select-label": {
+			"begin": "\\b(case|else)\\b",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.conditional.$1.cs"
+				}
+			},
+			"end": "(:)|(?=})",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.separator.colon.cs"
+				}
+			}
+		}
+	},
+	"scopeName": "source.act"
+}

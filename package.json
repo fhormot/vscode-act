@@ -1,0 +1,25 @@
+{
+  "name": "act",
+  "displayName": "ACT",
+  "description": "Asynchronous Circuit Toolkit (ACT) language support.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "act",
+      "aliases": ["Asynchronous Circuit Toolkit (ACT)", "act"],
+      "extensions": [".act"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "act",
+      "scopeName": "source.act",
+      "path": "./syntaxes/act.tmLanguage.json"
+    }]
+  }
+}

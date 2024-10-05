@@ -1,0 +1,40 @@
+/*
+    This is a multi-line comment.
+*/
+
+// This is a single-line comment.
+
+import "string.act";
+
+template <pint TEMPLATE_NUMBER>
+
+defproc chp_txt (
+    chan?(int<TEMPLATE_NUMBER>) input_1_i;
+    chan?(int<32>)              input_2_i;
+    chan?(int)                  input_3_i;
+    chan!(bool)                 output_o
+) {
+    int<TEMPLATE_NUMBER>        input_1_s;
+    int<32>                     input_2_s;
+    int                         input_3_s;
+    bool                        output_s;
+
+    chp-txt {
+        forever {
+            recv(input_1_i, input_1_s),
+            recv(input_2_i, input_2_s),
+            recv(input_3_i, input_3_s);
+
+            select {
+                case input_1_s > input_2_s:
+                    output_s := false;
+                case input_1_s | input_3_s:
+                    output_s := true;
+                else:
+                    skip
+            };
+
+            send(output_o, output_s);
+        }
+    }
+}
